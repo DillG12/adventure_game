@@ -117,11 +117,12 @@ class Player(Character):
         return input("What would you like to do? You can attack or attempt to flee:")
     
 class Enemy(Character):
-    def __init__(self, name, health, attack, gold_reward = 0, xp_reward = 0, player_level = 1):
+    def __init__(self, name, health, attack, gold_reward = 0, xp_reward = 0, player_level = 1, chance_to_appear = 1):
         super().__init__(name, health, attack)
         self.gold_reward = gold_reward
         self.xp_reward = xp_reward
         self.player_level = player_level
+        self.chance_to_appear = chance_to_appear
 
     def get_scaled_stats(self):
         self.health += (self.player_level - 1) * 10
@@ -187,23 +188,26 @@ def battle(player, enemy):
         print(f"{player.name}: {player.health} HP | {enemy.name}: {enemy.health} HP")
 
 ENEMY_TEMPLATES = [
-    {"name": "Goblin", "max_hp": 30, "attack_power": 10, "gold_reward": 5, "xp_reward": 20},
-    {"name": "Skeleton", "max_hp": 40, "attack_power": 12, "gold_reward": 8, "xp_reward": 30},
-    {"name": "Orc", "max_hp": 50, "attack_power": 15, "gold_reward": 12, "xp_reward": 40},
-    {"name": "Troll", "max_hp": 60, "attack_power": 18, "gold_reward": 20, "xp_reward": 50},
-    {"name": "Dark Knight", "max_hp": 80, "attack_power": 20, "gold_reward": 50, "xp_reward": 100}
+    {"name": "Goblin", "max_hp": 30, "attack_power": 10, "gold_reward": 5, "xp_reward": 20, "chance_to_appear": 50},
+    {"name": "Skeleton", "max_hp": 40, "attack_power": 12, "gold_reward": 8, "xp_reward": 30, "chance_to_appear": 40},
+    {"name": "Orc", "max_hp": 50, "attack_power": 15, "gold_reward": 12, "xp_reward": 40, "chance_to_appear": 30},
+    {"name": "Troll", "max_hp": 60, "attack_power": 18, "gold_reward": 20, "xp_reward": 50, "chance_to_appear": 20},
+    {"name": "Dark Knight", "max_hp": 80, "attack_power": 20, "gold_reward": 50, "xp_reward": 100, "chance_to_appear": 10},
+    {"name": "Dragon", "max_hp": 100, "attack_power": 25, "gold_reward": 100, "xp_reward": 200, "chance_to_appear": 5},
+    {"name": "Demon", "max_hp": 120, "attack_power": 30, "gold_reward": 150, "xp_reward": 300, "chance_to_appear": 1}
 ]
 
 def get_random_enemy(player):
     player_level = player.level
-    enemy_data = random.choice(ENEMY_TEMPLATES)
+    enemy_data = random.choices(ENEMY_TEMPLATES, weights=[et["chance_to_appear"] for et in ENEMY_TEMPLATES], k=1)[0]
     enemy = Enemy(
         name=enemy_data["name"],
         health=enemy_data["max_hp"],
         attack=enemy_data["attack_power"],
         gold_reward=enemy_data["gold_reward"],
         xp_reward=enemy_data["xp_reward"],
-        player_level=player_level
+        player_level=player_level,
+        chance_to_appear=enemy_data["chance_to_appear"]
     )
     enemy.get_scaled_stats()
     return enemy

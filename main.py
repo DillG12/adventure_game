@@ -46,7 +46,7 @@ def main():
                 print("There are no visible items in this room.")
             choice = input("What would you like to do? (search/loot/move/inventory/status/exit): ")
             if choice == "search":
-                current_room.search_room()
+                current_room.search_room(player)
             elif choice == "loot":
                 if current_room.visible_items:
                     for item in current_room.visible_items:
@@ -58,7 +58,6 @@ def main():
                         elif choice.lower() == "no":
                             print(f"You left {item.name} behind.")
                             current_room.visible_items.remove(item)
-                            continue
                         else:
                             print("Invalid choice. Please enter 'yes' or 'no'.")
                         if current_room.visible_items == []:

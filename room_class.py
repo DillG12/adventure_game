@@ -25,17 +25,19 @@ class Room:
         else:
             output += "You are trapped! There are no visible exits."
 
-    def search_room(self):
+    def search_room(self, player):
         if not self.hidden_items:
             print("It doesn't appear there are any more items in here.")
             return None
         else:
             found = random.randint(1, 20)
-            if found in range(8, 21):
+            if found in range(5, 21):
                 item_index = random.randint(0, len(self.hidden_items)-1)
                 found_item = self.hidden_items.pop(item_index)
                 self.visible_items.append(found_item)
                 print(f"You found {found_item}!")
+                player.experience += 10
+                player.level_up()
                 return found_item
             else:
                 print("You didn't find anything in your search.")
