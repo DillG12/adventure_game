@@ -2,12 +2,13 @@
 
 
 class Item:
-    def __init__(self, name, description, item_type = "generic", value = 0, rarity = "common"):
+    def __init__(self, name, description, item_type = "generic", value = 0, rarity = "common", uses = 1):
         self.name = name
         self.description = description
         self.item_type = item_type
         self.value = value
         self.rarity = rarity
+        self.uses = uses
 
     def __str__(self):
         return self.name
@@ -70,7 +71,8 @@ short_sword = Item(
     "A basic short sword with a steel blade and a simple hilt",
     "weapon",
     10,
-    "common"
+    "common",
+    10
 )
 
 long_sword = Item(
@@ -78,7 +80,8 @@ long_sword = Item(
     "A finely crafted long sword with a sharp steel blade and an ornate hilt",
     "weapon",
     25,
-    "uncommon"
+    "uncommon",
+    15
 )
 
 great_sword = Item(
@@ -86,7 +89,8 @@ great_sword = Item(
     "A massive great sword with a heavy steel blade and an intricate hilt",
     "weapon",
     40,
-    "rare"
+    "rare",
+    20
 )
 
 enchanted_dagger = Item(
@@ -94,7 +98,8 @@ enchanted_dagger = Item(
     "A small dagger that glows with a faint blue light",
     "weapon",
     35,
-    "epic"
+    "epic",
+    25
 )
 
 enchanted_staff = Item(
@@ -102,7 +107,8 @@ enchanted_staff = Item(
     "A wooden staff topped with a glowing crystal",
     "weapon",
     50,
-    "legendary"
+    "legendary",
+    30
 )
 
 dice = Item(

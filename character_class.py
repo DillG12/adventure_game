@@ -144,9 +144,21 @@ def battle(player, enemy,):
         if player_action == "attack":
             hit = random.randint(1, 5)
             if hit in range(2, 6):
-                damage = random.randint(player.attack - 5, player.attack + 5)
-                enemy.take_damage(damage)
-                print(f"{player.name} attacks {enemy.name} for {damage} damage!")
+                critical = random.randint(1, 20)
+                if critical == 20:
+                    damage = random.randint(player.attack - 5, player.attack + 5) * 2
+                    print(f"Critical hit! {player.name} attacks {enemy.name} for {damage} damage!")
+                else:
+                    damage = random.randint(player.attack - 5, player.attack + 5)
+                    enemy.take_damage(damage)
+                    print(f"{player.name} attacks {enemy.name} for {damage} damage!")
+                if player.weapon:
+                    player.weapon.uses -= 1
+                    if player.weapon.uses <= 0:
+                        print(f"Your {player.weapon.name} has broken!")
+                        player.attack -= player.weapon.value
+                        del player.inventory[player.weapon]
+                        player.weapon = None
             else:
                 print(f"{player.name} misses!")  
 
@@ -181,9 +193,14 @@ def battle(player, enemy,):
         if enemy_action == "attack":
             hit = random.randint(1, 5)
             if hit in range(3, 6):
-                damage = random.randint(enemy.attack - 3, enemy.attack + 3)
-                player.take_damage(damage)
-                print(f"{enemy.name} attacks {player.name} for {damage} damage!")
+                critical = random.randint(1, 20)
+                if critical == 20:
+                    damage = random.randint(enemy.attack - 3, enemy.attack + 3) * 2
+                    print(f"Critical hit! {enemy.name} attacks {player.name} for {damage} damage!")
+                else:
+                    damage = random.randint(enemy.attack - 3, enemy.attack + 3)
+                    player.take_damage(damage)
+                    print(f"{enemy.name} attacks {player.name} for {damage} damage!")
             else:
                 print(f"{enemy.name} misses!")
 
@@ -217,3 +234,18 @@ def get_random_enemy(player):
     )
     enemy.get_scaled_stats()
     return enemy
+short_sword = Item(
+    "Basic Short Sword",
+    "A basic short sword with a steel blade and a simple hilt.",
+    "weapon",
+    10,
+    "common",
+    1
+)
+# Example usage
+"""player = Player("Hero", 100, 10)
+player.add_item(short_sword)
+player.use_item()
+enemy = Enemy("Goblin", 30, 5)
+battle(player, enemy)"""
+

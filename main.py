@@ -41,7 +41,6 @@ def main():
                 print("You have been defeated. Game Over.")
                 break
         else:
-            print("The room is peaceful.\n You can explore safely.\n")
             safe = True
         while safe and player.is_alive():
             if current_room.visible_items:

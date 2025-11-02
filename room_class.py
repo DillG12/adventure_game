@@ -18,12 +18,19 @@ class Room:
         else:
             output += "The room appears to be empty.\n"
 
-        if self.exits:
+        """if self.exits:
             exit_list = [f"{direction.capitalize()} -> {destination}" for direction, destination in self.exits.items()]
             output += "\nAvailable exits:\n" 
             output += " |".join(exit_list)
         else:
-            output += "You are trapped! There are no visible exits."
+            output += "You are trapped! There are no visible exits."""
+        # Might add multiple rooms and exits later
+
+        if self.enemies:
+            enemy_list = [enemy.name for enemy in self.enemies]
+            output += "\nEnemies present:\n" + ", ".join(enemy_list) + ".\n"
+        else:
+            output += "The room is peaceful; no enemies in sight.\n"
 
     def search_room(self, player):
         if not self.hidden_items:
