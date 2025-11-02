@@ -1,2 +1,6 @@
 # adventure_game
+My first personal project for Boot.Dev course, this python text based adventure game uses the random library in python and gives a player a random room with enemies to fight and loot to gather. I have incorporated a leveling system that scales up player health and experience and enemy difficulty and xp gained from defeating enemies as well as weapons that randomly generate in rooms to pick up and equip to increase attack power.
 
+Once the game starts it asks for a name and generates a room. If there are enemies generated in the room it will immediately start the battle function. If you defeat the enemy the room will be safe and you can then loot the room or move on. You can also use items in your inventory when either in a safe room or during battle.
+
+There is still quite a few things I want to add to this game I created. Such as a merchant and buying and selling items found, making the leveling sytem more robust by adding traits to possibly choose from, making certain items more rare to drop, and adding much more items, enemies, and room descriptions, possibly also using an AI system to generate room names and descriptions constantly as you move through the dungeon. For now the game works as simple as it is and was really fun to create and I look forward to taking it further!
