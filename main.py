@@ -24,18 +24,24 @@ def main():
 
     while game_loop:
         current_room = random_room(player)
-        print(f"You have entered the {current_room.name}: {current_room.description}")
+        print(f"You have entered {current_room.name}:\n{current_room.description}\n")
 
         if current_room.enemies:
             for enemy in current_room.enemies:
-                battle(player, enemy)
+                fled = battle(player, enemy)
+                if fled:
+                    print("You fled to a new room.")
+                    safe = False
+                    break
+                else:
+                    current_room.enemies.remove(enemy)
+                    safe = True
+                    break
             if not player.is_alive():
                 print("You have been defeated. Game Over.")
                 break
-            print("You have emerged victorious!\n The room is now safe.")
-            safe = True
         else:
-            print("The room is peaceful. You can explore safely.")
+            print("The room is peaceful.\n You can explore safely.\n")
             safe = True
         while safe and player.is_alive():
             if current_room.visible_items:
@@ -43,7 +49,7 @@ def main():
                 for item in current_room.visible_items:
                     print(f"- {item.name}: {item.description}")
             else:
-                print("There are no visible items in this room.")
+                print("There are no visible items in this room.\n")
             choice = input("What would you like to do? (search/loot/move/inventory/status/exit): ")
             if choice == "search":
                 current_room.search_room(player)

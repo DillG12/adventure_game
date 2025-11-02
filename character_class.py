@@ -1,6 +1,8 @@
 import random
 from Item_class import *
 
+
+
 class Character:
     def __init__(self, name, health, attack):
         self.name = name
@@ -134,7 +136,7 @@ class Enemy(Character):
         return "attack"
     
 
-def battle(player, enemy):
+def battle(player, enemy,):
     print(f"A vicious {enemy.name} has appeared!")
 
     while player.is_alive() and enemy.is_alive():
@@ -146,8 +148,26 @@ def battle(player, enemy):
                 enemy.take_damage(damage)
                 print(f"{player.name} attacks {enemy.name} for {damage} damage!")
             else:
-                print(f"{player.name} misses!")
-        
+                print(f"{player.name} misses!")  
+
+        elif player_action == "flee":
+            success = random.randint(1, 6)
+            if success in range(5, 7):
+                print("You have successfully escaped!")
+                return True
+            else:
+                print("You could not escape!")
+
+        elif player_action == "inventory":
+            if sum(player.inventory.values()) > 0:
+                player.use_item()
+            else:
+                print("You have no items to use!")
+
+        else:
+            print("Invalid choice. Please try again.")
+            continue
+
         if not enemy.is_alive():
             print(f"{enemy.name} is defeated!")
             player.gold += enemy.gold_reward
@@ -155,22 +175,8 @@ def battle(player, enemy):
             print(f"You earned {enemy.xp_reward} experience points!")
             player.level_up()
             print(f"You earned {enemy.gold_reward} gold! You now have {player.gold} gold.")
-            break   
+            return False
 
-        if player_action == "flee":
-            success = random.randint(1, 6)
-            if success in range(5, 7):
-                print("You have successfully escaped!")
-                break
-            else:
-                print("You could not escape!")
-                
-        if player_action == "inventory":
-            if sum(player.inventory.values()) > 0:
-                player.use_item()
-            else:
-                print("You have no items to use!")
-        
         enemy_action = enemy.choose_action()
         if enemy_action == "attack":
             hit = random.randint(1, 5)
