@@ -147,6 +147,7 @@ def battle(player, enemy,):
                 critical = random.randint(1, 20)
                 if critical == 20:
                     damage = random.randint(player.attack - 5, player.attack + 5) * 2
+                    enemy.take_damage(damage)
                     print(f"Critical hit! {player.name} attacks {enemy.name} for {damage} damage!")
                 else:
                     damage = random.randint(player.attack - 5, player.attack + 5)
@@ -196,6 +197,7 @@ def battle(player, enemy,):
                 critical = random.randint(1, 20)
                 if critical == 20:
                     damage = random.randint(enemy.attack - 3, enemy.attack + 3) * 2
+                    player.take_damage(damage)
                     print(f"Critical hit! {enemy.name} attacks {player.name} for {damage} damage!")
                 else:
                     damage = random.randint(enemy.attack - 3, enemy.attack + 3)
