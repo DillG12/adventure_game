@@ -37,6 +37,7 @@ class Player(Character):
             self.max_health = int(self.max_health * 1.1)
             self.health = self.max_health
             self.attack = int(self.attack * 1.1)
+            self.inventory_limit += 2
             print(f"Congratulations! {self.name} has leveled up! Health is now {self.max_health} and attack is now {self.attack}.")
 
     def heal(self, heal_amount):

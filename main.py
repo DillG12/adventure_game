@@ -5,9 +5,22 @@ from room_class import Room, ROOM_NAMES, random_room
 
 
 def main():
-    print("Welcome to the Adventure Game!")
-    print("1. Start New Game")
-    print("2. Exit")
+    print("""--------------------------------------------------
+                THE RUINS OF OLD
+--------------------------------------------------
+
+The thirst is getting to you. Your supplies ran out two days ago. Legend has it that the ancient ruins beneath the desert hold enough treasure to keep a kingdom running for centuries. 
+
+More importantly, they hold a source of fresh water deep within their lowest levels. 
+
+You've managed to pry open a grate leading into the complex. It's pitch black, but your hands brush against the top of a stone ladder.
+
+Do you wish to descend into the darkness, or stay above ground and risk dehydration?
+
+What do you do?
+""")
+    print("1 = Descend into the darkness")
+    print("2 = Stay above ground")
     choice = input("Enter your choice: ")
         
     if choice == '1':
