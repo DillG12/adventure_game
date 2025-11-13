@@ -2,7 +2,7 @@
 
 
 class Item:
-    def __init__(self, name, description, item_type = "generic", value = 0, rarity = "common", uses = 1):
+    def __init__(self, name, description, item_type = "generic", value = 0, rarity = 20, uses = 1):
         self.name = name
         self.description = description
         self.item_type = item_type
@@ -15,147 +15,71 @@ class Item:
     
     def rarity_level(self):
         rarity_levels = {
-            "common": 20,
-            "uncommon": 15,
-            "rare": 5,
-            "epic": 2,
-            "legendary": 1
+            50: "common",
+            25: "uncommon",
+            10: "rare",
+            2: "epic",
+            1: "legendary"
         }
-        return rarity_levels.get(self.rarity.lower(), 1)
+        return rarity_levels.get(self.rarity.lower(), "unknown")
     
 
 
 
-small_potion = Item(
-    "Minor Healing Potion",
-    "A small vial filled with red liquid",
-    "potion",
-    15, #Healing value
-    "common"
-)
+ITEM_TEMPLATES = [
+    {"name": "Minor Healing Potion", "description": "A small vial filled with red liquid", "item_type": "potion", "value": 15, "rarity": 50, "uses": 1},
 
-medium_potion = Item(
-    "Greater Healing Potion",
-    "A regular vial filled with a bright red liquid",
-    "potion",
-    30,
-    "uncommon"
-)
+    {"name": "Greater Healing Potion", "description": "A regular vial filled with a bright red liquid", "item_type": "potion", "value": 30, "rarity": 25, "uses": 1},
 
-large_potion = Item(
-    "Superior Healing Potion",
-    "A large vial filled with a glowing red liquid",
-    "potion",
-    50,
-    "rare"
-)
+    {"name": "Superior Healing Potion", "description": "A large vial filled with a glowing red liquid", "item_type": "potion", "value": 50, "rarity": 10, "uses": 1},
 
-very_large_potion = Item(
-    "Ultimate Healing Potion",
-    "A massive vial filled with a radiant red liquid",
-    "potion",
-    100,
-    "epic"
-)
+    {"name": "Epic Healing Potion", "description": "A massive vial filled with a radiant red liquid", "item_type": "potion", "value": 100, "rarity": 2, "uses": 1},
 
-special_potion = Item(
-    "Elixir of Life",
-    "A mystical potion that fully restores health",
-    "potion",
-    9999,  # Effectively full heal
-    "legendary"
-)   
+    {"name": "Elixir of Life", "description": "A mystical potion that fully restores health", "item_type": "potion", "value": 9999, "rarity": 1, "uses": 1},
 
-short_sword = Item(
-    "Short Sword",
-    "A basic short sword with a steel blade and a simple hilt",
-    "weapon",
-    10,
-    "common",
-    10
-)
+    {"name": "Short Sword", "description": "A basic short sword with a steel blade and a simple hilt", "item_type": "weapon", "value": 10, "rarity": 50, "uses": 10},
 
-long_sword = Item(
-    "Long Sword",
-    "A finely crafted long sword with a sharp steel blade and an ornate hilt",
-    "weapon",
-    25,
-    "uncommon",
-    15
-)
+    {"name": "Long Sword", "description": "A finely crafted long sword with a sharp steel blade and an ornate hilt", "item_type": "weapon", "value": 25, "rarity": 25, "uses": 15},
 
-great_sword = Item(
-    "Great Sword",
-    "A massive great sword with a heavy steel blade and an intricate hilt",
-    "weapon",
-    40,
-    "rare",
-    20
-)
+    {"name": "Great Sword", "description": "A massive great sword with a heavy steel blade and an intricate hilt", "item_type": "weapon", "value": 40, "rarity": 10, "uses": 20},
 
-enchanted_dagger = Item(
-    "Enchanted Dagger",
-    "A small dagger that glows with a faint blue light",
-    "weapon",
-    35,
-    "epic",
-    25
-)
+    {"name": "Enchanted Dagger", "description": "A small dagger that glows with a faint blue light", "item_type": "weapon", "value": 35, "rarity": 2, "uses": 25},
 
-enchanted_staff = Item(
-    "Enchanted Staff",
-    "A wooden staff topped with a glowing crystal",
-    "weapon",
-    50,
-    "legendary",
-    30
-)
+    {"name": "Enchanted Staff", "description": "A wooden staff topped with a glowing crystal", "item_type": "weapon", "value": 50, "rarity": 1, "uses": 30},
 
-dice = Item(
-    "Mystic Dice",
-    "A pair of ancient dice that seem to shimmer with a strange energy",
-    10,
-    "common"
+    {"name": "Mystic Dice", "description": "A pair of ancient dice that seem to shimmer with a strange energy", "item_type": "misc", "value": 10, "rarity": 50, "uses": 1},
+
+    {"name": "Brass Compass", "description": "A compass that points North", "item_type": "misc", "value": 15, "rarity": 50, "uses": 1},
+
+    {"name": "Silver Mirror", "description": "A hand mirror with an ornate silver frame", "item_type": "misc", "value": 20, "rarity": 50, "uses": 1},
+
+    {"name": "Ancient Key", "description": "A rusted key that looks very old", "item_type": "misc", "value": 25, "rarity": 50, "uses": 1},
+
+    {"name": "Oil Lantern", "description": "A lantern that provides light in dark places", "item_type": "misc", "value": 30, "rarity": 50, "uses": 1},
+
+    {"name": "Small Pin", "description": "A small decorative pin, possibly valuable", "item_type": "misc", "value": 5, "rarity": 50, "uses": 1},
+
+    {"name": "Ruby Ring", "description": "A ring set with a large red ruby", "item_type": "misc", "value": 100, "rarity": 25, "uses": 1},
+
+    {"name": "Emerald Necklace", "description": "A necklace adorned with a shining emerald", "item_type": "misc", "value": 150, "rarity": 2, "uses": 1},
+
+    {"name": "Diamond Crown", "description": "A crown encrusted with sparkling diamonds", "item_type": "misc", "value": 500, "rarity": 1, "uses": 1},
+]
+
+def generate_item():
+    import random
+
+    item_data = random.choices(ITEM_TEMPLATES, weights=[item["rarity"] for item in ITEM_TEMPLATES], k=1)[0]
+    item = Item(
+        name=item_data["name"],
+        description=item_data["description"],
+        item_type=item_data["item_type"],
+        value=item_data["value"],
+        rarity=item_data["rarity"],
+        uses=item_data["uses"]
     )
 
-compass = Item(
-    "Brass Compass",
-    "A compass that points North",
-    15,
-    "common"
-    )
 
-mirror = Item(
-    "Silver Mirror",
-    "A hand mirror with an ornate silver frame",
-    20,
-    "common"
-    )
-
-ancient_key = Item(
-    "Ancient Key",
-    "A rusted key that looks very old",
-    25,
-    "common"
-    )
-
-lantern = Item(
-    "Oil Lantern",
-    "A lantern that provides light in dark places",
-    30,
-    "common"
-    )
-
-small_pin = Item(
-    "Small Pin",
-    "A small decorative pin, possibly valuable",
-    5,
-    "common"
-    )
-
-def item_list():
-    return [small_potion, medium_potion, large_potion, very_large_potion, special_potion,
-            short_sword, long_sword, great_sword, enchanted_dagger, enchanted_staff,
-            dice, compass, mirror, ancient_key,
-            lantern, small_pin]
+    return item
+    
 

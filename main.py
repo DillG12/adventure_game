@@ -67,7 +67,7 @@ What do you do?
                 current_room.search_room(player)
             elif choice == "loot":
                 if current_room.visible_items:
-                    for item in current_room.visible_items:
+                    for item in current_room.visible_items[:]:
                         choice = input(f"Do you want to pick up {item.name}? (yes/no): ")
                         if choice.lower() == "yes":
                             player.add_item(item)
@@ -86,7 +86,7 @@ What do you do?
                 print("You move to the next room.")
                 safe = False
             elif choice == "inventory":
-                player.use_item()
+                player.item_menu()
             elif choice == "status":
                 player.display_stats()
             elif choice == "exit":

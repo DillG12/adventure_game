@@ -74,7 +74,7 @@ A faint hum can be heard, as if the crystals themselves are resonating with some
 def random_room(player):
     name = random.choice(list(ROOM_NAMES.keys()))
     description = ROOM_NAMES[name]
-    room_items = random.choices(item_list(), weights=[item.rarity_level() for item in item_list()], k=random.randint(0, 3))
+    room_items = [generate_item() for _ in range(random.randint(0, 5))] 
     enemies = [get_random_enemy(player) for _ in range(random.randint(0, 1))]
     if len(room_items) == 0:
         return Room(name, description, [], [], enemies)

@@ -70,48 +70,103 @@ class Player(Character):
         print(f"Attack: {self.attack}")
         print(f"Level: {self.level}")
         print(f"Experience: {self.experience}/{self.xp_to_next_level}")
+        if self.weapon:
+            print(f"Equipped weapon: {self.weapon.name} (Attack Bonus: {self.weapon.value}, Uses left: {self.weapon.uses})")
         
     def display_inventory(self):
+        sorted_inventory = dict(sorted(self.inventory.items(), key=lambda x: x[0].name))
+        self.inventory = sorted_inventory
         print(f"\n{self.name}'s inventory")
         for item, quantity in self.inventory.items():
             print(f"{item.name}: {quantity}")
         print(f"Gold: {self.gold}\n")
         
+    def item_menu(self):
+        item_menu = True
+        while item_menu:
+            self.display_inventory()
+            menu_choice = input("Would you like to use an item or remove an item? (use/remove/exit): ")
+            if menu_choice.lower() == "use":
+                self.use_item()
+            elif menu_choice.lower() == "remove":
+                self.remove_item()
+            elif menu_choice.lower() == "exit":
+                print("Exiting item menu.")
+                item_menu = False
+            else:
+                print("Invalid choice. Please try again.")
+                continue
+            
+
+    def remove_item(self):
+        item_menu = True
+        while item_menu:
+            self.display_inventory()
+            item_choice = input("Enter the name of the item you want to remove (or 'exit' to leave): ")
+            if item_choice.lower() == "exit":
+                print("Exiting item menu.")
+                return
+            item_obj_to_remove = None
+            for item in self.inventory:
+                if item.name.lower() == item_choice.lower():
+                    item_obj_to_remove = item
+                    break
+            if item_obj_to_remove:
+                quantity_choice = input(f"How many {item_obj_to_remove.name}s would you like to remove? (You have {self.inventory[item_obj_to_remove]}): ")
+                try:
+                    quantity_choice = int(quantity_choice)
+                    if quantity_choice <= 0:
+                        print("Please enter a positive number.")
+                        continue
+                    if quantity_choice >= self.inventory[item_obj_to_remove]:
+                        del self.inventory[item_obj_to_remove]
+                        print(f"Removed all {item_obj_to_remove.name}s from inventory.")
+                    else:
+                        self.inventory[item_obj_to_remove] -= quantity_choice
+                        print(f"Removed {quantity_choice} x {item_obj_to_remove.name} from inventory.")
+                except ValueError:
+                    print("Invalid input. Please enter a number.")
+            else:
+                print("Item not found in inventory.")
+
+
     def use_item(self):
-        self.display_inventory()
-        item_choice = input("Which item would you like to use? ")
-        if item_choice.lower() == "exit":
-            print("Exiting item menu.")
-            return
-        item_obj_to_use = None
-        for item in self.inventory:
-            if item.name.lower() == item_choice.lower():
-                item_obj_to_use = item
-                break
+        using_items = True
+        while using_items:
+            self.display_inventory()
+            item_choice = input("Enter the name of the item you want to use (or 'exit' to leave): ")
+            if item_choice.lower() == "exit":
+                print("Exiting item menu.")
+                return
+            item_obj_to_use = None
+            for item in self.inventory:
+                if item.name.lower() == item_choice.lower():
+                    item_obj_to_use = item
+                    break
 
-        if item_obj_to_use and self.inventory[item_obj_to_use] > 0:
-            if item_obj_to_use.item_type == "potion":
-                heal_amount = item_obj_to_use.value
-                self.heal(heal_amount)
+            if item_obj_to_use and self.inventory[item_obj_to_use] > 0:
+                if item_obj_to_use.item_type == "potion":
+                    heal_amount = item_obj_to_use.value
+                    self.heal(heal_amount)
 
-                self.inventory[item_obj_to_use] -= 1
-                if self.inventory[item_obj_to_use] == 0:
-                    print(f"You have no more {item_obj_to_use.name}s left.")
-                    del self.inventory[item_obj_to_use]
-                else:    
-                    print(f"You used a {item_obj_to_use.name}. You now have {self.inventory[item_obj_to_use]} {item_obj_to_use.name}s left.")
+                    self.inventory[item_obj_to_use] -= 1
+                    if self.inventory[item_obj_to_use] == 0:
+                        print(f"You have no more {item_obj_to_use.name}s left.")
+                        del self.inventory[item_obj_to_use]
+                    else:    
+                        print(f"You used a {item_obj_to_use.name}. You now have {self.inventory[item_obj_to_use]} {item_obj_to_use.name}s left.")
 
-            if item_obj_to_use.item_type == "weapon":
-                if self.inventory[item_obj_to_use] < 1:
-                    print(f"You do not have a {item_obj_to_use.name} to equip.")
-                    return
-                if self.weapon:
-                    self.attack -= self.weapon.value
-                    print(f"You replaced your {self.weapon.name} with {item_obj_to_use.name}.")
-                else:
-                    print(f"You equipped {item_obj_to_use.name} as your weapon.")
-                self.weapon = item_obj_to_use
-                self.attack += item_obj_to_use.value
+                if item_obj_to_use.item_type == "weapon":
+                    if self.inventory[item_obj_to_use] < 1:
+                        print(f"You do not have a {item_obj_to_use.name} to equip.")
+                        return
+                    if self.weapon:
+                        self.attack -= self.weapon.value
+                        print(f"You replaced your {self.weapon.name} with {item_obj_to_use.name}.")
+                    else:
+                        print(f"You equipped {item_obj_to_use.name} as your weapon.")
+                    self.weapon = item_obj_to_use
+                    self.attack += item_obj_to_use.value
         
     
                 
@@ -159,7 +214,9 @@ def battle(player, enemy,):
                     if player.weapon.uses <= 0:
                         print(f"Your {player.weapon.name} has broken!")
                         player.attack -= player.weapon.value
-                        del player.inventory[player.weapon]
+                        player.inventory[player.weapon] -= 1
+                        if player.inventory[player.weapon] == 0:
+                            del player.inventory[player.weapon]
                         player.weapon = None
             else:
                 print(f"{player.name} misses!")  
@@ -226,11 +283,12 @@ ENEMY_TEMPLATES = [
 def get_random_enemy(player):
     player_level = player.level
     enemy_data = random.choices(ENEMY_TEMPLATES, weights=[et["chance_to_appear"] for et in ENEMY_TEMPLATES], k=1)[0]
+    gold = random.randint(enemy_data["gold_reward"] - 5, enemy_data["gold_reward"] + 5)
     enemy = Enemy(
         name=enemy_data["name"],
         health=enemy_data["max_hp"],
         attack=enemy_data["attack_power"],
-        gold_reward=enemy_data["gold_reward"],
+        gold_reward=gold,
         xp_reward=enemy_data["xp_reward"],
         player_level=player_level,
         chance_to_appear=enemy_data["chance_to_appear"]
